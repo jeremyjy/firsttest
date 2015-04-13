@@ -1,13 +1,163 @@
-<!DOCTYPR html>
-<html>
-<head>
+<% include header.ejs %>
+<title>User</title>
+<script>
 
+    function findPost(postId) {
+        //console.log('fin post begin')
+        $.ajax({
+            type: "Post",
+            url: "/findPost",
+            data: {postId: postId},
+            success: function (msg) {
+                $('#post-selected-title')[0].innerText = msg.post.title
+                $('#post-selected-body')[0].innerHTML = msg.post.body
+                $('#post-selected-time')[0].innerText = msg.post.createdAt.split('.')[0].replace('T', ' ')
+                $('#post-selected-tag')[0].innerText = msg.post.tag1
+                $('#commentSub').removeAttr('onclick')
+                $('#commentSub').attr('onclick','commentFn( \''+msg.post.author + '/' + msg.post.objectId+'\')')
+                $('#commentArea').empty()
+                msg.comments.forEach(function (comment, err) {
+                    $('<hr>').appendTo($('#commentArea'))
+                    $('<p class="commentsTime"><small>' + comment.createdAt.split('.')[0].replace('T', ' ') + '</small></p>').appendTo($('#commentArea'))
+                    $('<p>' + comment.author + ' Said:</p>').appendTo($('#commentArea'))
+                    $('<p>' + comment.text + '</p>').appendTo($('#commentArea'))
+                })
+            }
+        })
+    }
+    function commentFn(url) {
+        //console.log('fin post begin')
+        $.ajax({
+            type: "Post",
+            url: url,
+            data: {text: $('#commentText')[0].value},
+            success: function (msg) {
+                $('#commentArea').empty()
+                msg.comments.forEach(function (comment, err) {
+                    $('<hr>').appendTo($('#commentArea'))
+                    $('<p class="commentsTime"><small>' + comment.createdAt.split('.')[0].replace('T', ' ') + '</small></p>').appendTo($('#commentArea'))
+                    $('<p>' + comment.author + ' Said:</p>').appendTo($('#commentArea'))
+                    $('<p>' + comment.text + '</p>').appendTo($('#commentArea'))
+                })
+            }
+        })
+    }
+
+</script>
+<style>
+    body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
+        font-family: Microsoft YaHei, '宋体', Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+    }
+
+    .commentsTime {
+        float: right;
+    }
+</style>
 </head>
 <body>
-<%posts.forEach(function(post,err) {%>
-<h2><%=post.title%></h2>
-<p><%=post.body%></p>
-<%})%>
-</form>
-</body>
-</html>
+<% Date.prototype.Format=function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours() % 12 == 0 ? 12 : this.getHours() % 12, //小时
+        "H+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    var week = {
+        "0": "/u65e5",
+        "1": "/u4e00",
+        "2": "/u4e8c",
+        "3": "/u4e09",
+        "4": "/u56db",
+        "5": "/u4e94",
+        "6": "/u516d"
+    };
+    if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    if (/(E+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "/u661f/u671f" : "/u5468") : "") + week[this.getDay() + ""]);
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+    }
+    return fmt;
+} %>
+<% include nav.ejs %>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            <nav class="navbar navbar-default">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#navbar-ul2">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div><a class="navbar-brand" href="#">Article List</a></div>
+                        <br>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-ul2">
+                        <ul class="nav  nav-stacked" role="navigation">
+                            <li><h3>&nbsp;</h3></li>
+                            <% if(posts){ %>
+                            <% posts.forEach(function(post, err) { %>
+                            <li><a onclick="findPost('<%= post.id %>')" href="#"
+                                   class="text-muted"><%= post.attributes.title %></a></li>
+                            <% })} %>
+                        </ul>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+        <div class="col-xs-12 col-sm-9" id="post_selected">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <% if (postSelected){ %>
+                    <h2 id="post-selected-title"><%= postSelected.attributes.title %></h2>
+                    <button class="btn" style="float:right"><span class="glyphicon glyphicon-heart-empty"></span>
+                    </button>
+                    <span  ><small id="post-selected-time"><%= postSelected.createdAt.Format("yyyy-MM-dd hh:mm:ss") %></small></span><br><br>
+                    <span class="label label-default" id="post-selected-tag" ><%= postSelected.attributes.tag1 %></span>
+                    <hr>
+                    <p id="post-selected-body"><%= postSelected.attributes.body %></p>
+                    <% } %>
+                </div>
+                <div class="panel-body" id="commentArea">
+                    <% if(comments){comments.forEach(function(comment, err){ %>
+                    <hr>
+                    <p class="commentsTime">
+                        <small><%= comment.createdAt.Format("yyyy-MM-dd hh:mm:ss") %></small>
+                    </p>
+                    <p><%= comment.attributes.author %> Said:</p>
+
+                    <p><%= comment.attributes.text %></p>
+                    <% })} %>
+                </div>
+                <div class="panel-footer">
+                    <form method="POST">
+                        <input type="text" class="form-control" name="text" id="commentText">
+                        <br>
+                        <button id="commentSub" class="btn btn-primary" type="button"
+                                onclick="commentFn('<%= postSelected.attributes.author+'/'+postSelected.id %>')">Comment
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<% include footer.ejs %>

@@ -1,0 +1,211 @@
+<% include header.ejs %>
+<script>
+    function findNewest() {
+        $.ajax({
+            type: "Post",
+            url: "/findNewest",
+            success: function (msg) {
+               $('#newestUl').empty()
+                $('<li><h3>&nbsp;</h3></li>').appendTo($('#newestUl'))
+                msg.posts.forEach(function(post,err){
+                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#newestUl'))
+//                    $('<li><a class=\"text-muted\" href=\"/user/'+post.author+'/'+post.objectId+'\">'+post.title+'</a></li>').appendTo($('#newestUl'))
+                })
+            }
+        })
+    }
+    function findtop() {
+        $.ajax({
+            type: "Post",
+            url: "/findNewest2",
+            success: function (msg2) {
+                $('#topUl').empty()
+                $('<li><h3>&nbsp;</h3></li>').appendTo($('#topUl'))
+                msg2.posts.forEach(function (post, err) {
+                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#topUl'))
+                })
+
+            }
+        })
+    }
+    function findNewest3() {
+        $.ajax({
+            type: "Post",
+            url: "/findNewest",
+            success: function (msg3) {
+                $('#newestUl3').empty()
+                $('<li><h3>&nbsp;</h3></li>').appendTo($('#newestUl3'))
+                msg3.posts.forEach(function(post,err){
+                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#newestUl3'))
+                })
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        findNewest()
+        findtop()
+        findNewest3()
+    })
+    function findPost(postId) {
+        //console.log('fin post begin')
+        $.ajax({
+            type: "Post",
+            url: "/findPost",
+            data: {postId: postId},
+            success: function (msg) {
+                $('#post-selected-title')[0].innerText = msg.post.title
+                $('#post-selected-body')[0].innerHTML = msg.post.body
+                $('#post-selected-time')[0].innerText = msg.post.createdAt.split('.')[0].replace('T', ' ')
+                $('#post-selected-tag')[0].innerText = msg.post.tag1
+                $('#commentSub').removeAttr('onclick')
+                $('#commentSub').attr('onclick', 'commentFn( \'user/' + msg.post.author + '/' + msg.post.objectId + '\')')
+                $('#commentArea').empty()
+                msg.comments.forEach(function (comment, err) {
+                    $('<hr>').appendTo($('#commentArea'))
+                    $('<p class="commentsTime"><small>' + comment.createdAt.split('.')[0].replace('T', ' ') + '</small></p>').appendTo($('#commentArea'))
+                    $('<p>' + comment.author + ' Said:</p>').appendTo($('#commentArea'))
+                    $('<p>' + comment.text + '</p>').appendTo($('#commentArea'))
+                })
+            }
+        })
+    }
+    function commentFn(url) {
+        //console.log('fin post begin')
+        $.ajax({
+            type: "Post",
+            url: url,
+            data: {text: $('#commentText')[0].value},
+            success: function (msg) {
+                $('#commentArea').empty()
+                msg.comments.forEach(function (comment, err) {
+                    $('<hr>').appendTo($('#commentArea'))
+                    $('<p class="commentsTime"><small>' + comment.createdAt.split('.')[0].replace('T', ' ') + '</small></p>').appendTo($('#commentArea'))
+                    $('<p>' + comment.author + ' Said:</p>').appendTo($('#commentArea'))
+                    $('<p>' + comment.text + '</p>').appendTo($('#commentArea'))
+                })
+            }
+        })
+    }
+
+</script>
+</head>
+<body>
+<% if (msg){ %>
+<div class="alert <%= msgType %> alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
+    <strong><%= msg %></strong>
+</div>
+<% } %>
+<% include nav.ejs %>
+<% include login.ejs %>
+<div class="jumbotron" style="margin-top:-20px;">
+    <h1>Hello, world!</h1>
+
+    <p>...</p>
+
+    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-4">
+            <nav class="navbar navbar-default">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#navbar-ul-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div><a class="navbar-brand" href="#">the newest</a></div>
+                        <br>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-ul-1">
+                        <ul class="nav  nav-stacked" role="navigation" id="newestUl">
+                            <li><h3>&nbsp;</h3></li>
+
+
+                            <li><a href="#"
+                                   class="text-muted">xxx</a></li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <nav class="navbar navbar-default">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#navbar-ul-2">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div><a class="navbar-brand" href="#">Article List</a></div>
+                        <br>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-ul-2">
+                        <ul class="nav  nav-stacked" role="navigation" id="topUl">
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <nav class="navbar navbar-default">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#navbar-ul-3">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div><a class="navbar-brand" href="#">Article List</a></div>
+                        <br>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-ul-3">
+                        <ul class="nav  nav-stacked" role="navigation" id="newestUl3">
+
+                        </ul>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+        <div class="col-xs-12 " id="post_selected">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 id="post-selected-title"></h2>
+                    <button class="btn" style="float:right"><span class="glyphicon glyphicon-heart-empty"></span>
+                    </button>
+                    <span  ><small id="post-selected-time"></small></span><br><br>
+                    <span class="label label-default" id="post-selected-tag" ></span>
+                    <hr>
+                    <p id="post-selected-body"></p>
+                </div>
+                <div class="panel-body" id="commentArea">
+
+                </div>
+                <div class="panel-footer">
+                    <form method="POST">
+                        <input type="text" class="form-control" name="text" id="commentText">
+                        <br>
+                        <button id="commentSub" class="btn btn-primary" type="button">Comment
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<% include footer.ejs %>

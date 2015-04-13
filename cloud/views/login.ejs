@@ -1,13 +1,37 @@
-<!DOCTYPR html>
-<html>
-<head>
-
-</head>
-<body>
-<form method="post">
-    <input type="text" name="username">
-    <input type="password" name="password">
-    <button type="submit"></button>
-</form>
-</body>
-</html>
+<div class="modal fade" id="myModal_login" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                       Login To Your Blog
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <span  class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                        <input class="form-control" name="username" type="text">
+                    </div><br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                        <input class="form-control" name="password" type="password">
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
+                    <button typr="submit" class="btn btn-primary" formaction="/login">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>

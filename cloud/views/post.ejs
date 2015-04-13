@@ -1,0 +1,37 @@
+<!DOCTYPR html>
+<html>
+<head>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+        function likes(){
+            alert(window.location.pathname.split('/')[3])
+            $.ajax({
+                type:'Post',
+                url:'/likes',
+                data:{postId:window.location.pathname.split('/')[3]},
+                success:function(msg){
+                    alert(msg.msg)
+                }
+            })
+
+        }
+    </script>
+</head>
+<body>
+<h2><%=post.attributes.title%></h2>
+<p><%=post.attributes.body%></p>
+<input type="button" value="like" onclick="likes()">
+
+<%comments.forEach(function(comment,err) {%>
+<a href="/user/<%=comment.attributes.author%>">
+    <h2><%=comment.attributes.author%> </h2>
+</a>Say:
+<p><%=comment.attributes.text%></p>
+<%})%>
+<form method="post">
+    <input type="text" name="text">
+    <button type="submit" value="评论"></button>
+</form>
+
+</body>
+</html>

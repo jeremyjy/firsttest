@@ -1,14 +1,184 @@
-<html>
-<head>
-
+<% include header.ejs%>
+    <title>Write Post</title>
+<link href="/font-awesome.css" rel="stylesheet">
+<style>
+    #editor {
+        max-height: 250px;
+        height: 250px;
+        background-color: white;
+        border-collapse: separate;
+        border: 1px solid rgb(204, 204, 204);
+        padding: 4px;
+        box-sizing: content-box;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+        box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border-bottom-left-radius: 3px;
+        border-top-left-radius: 3px;
+        overflow: scroll;
+        outline: none;
+    }
+    #submit,#save{
+        float: right;
+        margin:10px
+    }
+</style>
 </head>
 <body>
-<form method="post">
-    <input type="text" name="title"><br>
-    <input type="text" name="body"><br>
-    <input type="text" name="tag1"><br>
-    <input type="checkbox" name="visitable">
-    <button type="submit"></button>
-</form>
-</body>
-</html>
+<div id="alertDiv"></div>
+<%include nav.ejs%>
+
+<h2 class="text-muted">Write Article</h2>
+
+<div class="container">
+    <form method="Post">
+        <div>
+            title:<input type="text" class="form-control" id="postTitle">
+            tag:<input type="text" class="form-control" id="postTag">
+            text:
+            <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+                <div class="btn-group">
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Font"><i
+                                class="icon-font"></i><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Font Size"><i
+                                class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+                        <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+                        <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
+                    <a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i
+                                class="icon-italic"></i></a>
+                    <a class="btn btn-default" data-edit="strikethrough" title="Strikethrough"><i
+                                class="icon-strikethrough"></i></a>
+                    <a class="btn btn-default" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i
+                                class="icon-underline"></i></a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list"><i
+                                class="icon-list-ul"></i></a>
+                    <a class="btn btn-default" data-edit="insertorderedlist" title="Number list"><i
+                                class="icon-list-ol"></i></a>
+                    <a class="btn btn-default" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i
+                                class="icon-indent-left"></i></a>
+                    <a class="btn btn-default" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i
+                                class="icon-align-left"></i></a>
+                    <a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i
+                                class="icon-align-center"></i></a>
+                    <a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i
+                                class="icon-align-right"></i></a>
+                    <a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i
+                                class="icon-align-justify"></i></a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i
+                                class="icon-link"></i></a>
+
+                    <div class="dropdown-menu input-append">
+                        <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
+                        <button class="btn btn-default" type="button">Add</button>
+                    </div>
+                    <a class="btn btn-default" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
+
+                </div>
+
+                <div class="btn-group">
+                    <a class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn"><i
+                                class="icon-picture"></i></a>
+                    <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage"/>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
+                    <a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i
+                                class="icon-repeat"></i></a>
+                </div>
+                <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
+            </div>
+
+            <div id="editor" name="text" >
+
+            </div>
+            <input class="btn btn-info" type="button" onclick="postSub()" id="submit" value="Submit">
+            <input class="btn btn-default" type="submit" value="Save" id="save">
+        </div>
+    </form>
+</div>
+
+
+<script src="/jquery.hotkeys.js"></script>
+<script src="/bootstrap-wysiwyg.js"></script>
+<script>
+    $(function () {
+        function initToolbarBootstrapBindings() {
+            var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
+                        'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+                        'Times New Roman', 'Verdana'],
+                    fontTarget = $('[title=Font]').siblings('.dropdown-menu');
+            $.each(fonts, function (idx, fontName) {
+                fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
+            });
+            $('a[title]').tooltip({container: 'body'});
+            $('.dropdown-menu input').click(function () {
+                return false;
+            })
+                    .change(function () {
+                        $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+                    })
+                    .keydown('esc', function () {
+                        this.value = '';
+                        $(this).change();
+                    });
+
+            $('[data-role=magic-overlay]').each(function () {
+                var overlay = $(this), target = $(overlay.data('target'));
+                overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
+            });
+            $('#voiceBtn').hide();
+            // if ("onwebkitspeechchange"  in document.createElement("input")) {
+            //   var editorOffset = $('#editor').offset();
+            //   $('#voiceBtn').css('position','absolute').offset({top: editorOffset.top, left: editorOffset.left+$('#editor').innerWidth()-35});
+            // } else {
+            //   $('#voiceBtn').hide();
+            // }
+        };
+        initToolbarBootstrapBindings();
+        $('#editor').wysiwyg();
+        window.prettyPrint && prettyPrint();
+    });
+    function postSub(){
+        $.ajax({
+            type:'Post',
+            url:'/writePost',
+            data:{
+                title:$('#postTitle')[0].value,
+                tag1:$('#postTag')[0].value,
+                body:$('#editor')[0].innerHTML
+            },
+            success: function (msg) {
+                console.log(msg.msg)
+                $('#alertDiv').empty()
+                $('<div class="alert alert-info" id="alertTemp"></div>').appendTo($('#alertDiv'))
+                $('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>').appendTo($('#alertTemp'))
+                $('<strong>post success!</strong>').appendTo($('#alertTemp'))
+            },
+            error:function(msg){
+                $('#alertDiv').empty()
+                $('<div class="alert alert-info" id="alertTemp"></div>').appendTo($('#alertDiv'))
+                $('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>').appendTo($('#alertTemp'))
+                $('<strong>post error!</strong>').appendTo($('#alertTemp'))
+            }
+        })
+    }
+</script>
+<% include footer.ejs%>
