@@ -199,7 +199,7 @@ app.post('/findPost', function (req, res) {
         })
     })
 })
-app.post('/findNewest', function (req, res) {
+app.get('/findNewest', function (req, res) {
     Post.findNewest(10).then(function (posts) {
             res.send('msg', {posts: posts})
             //console.log(post)

@@ -2,7 +2,7 @@
 <script>
     function findNewest() {
         $.ajax({
-            type: "Post",
+            type: "Get",
             url: "/findNewest",
             success: function (msg) {
                $('#newestUl').empty()
