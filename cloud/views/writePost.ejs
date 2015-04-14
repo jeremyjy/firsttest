@@ -160,6 +160,8 @@
         $.ajax({
             type:'Post',
             url:'/writePost',
+            dataType:"jsonp",
+            jsonpCallback: 'callback',
             data:{
                 title:$('#postTitle')[0].value,
                 tag1:$('#postTag')[0].value,

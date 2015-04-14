@@ -2,7 +2,9 @@
 <script>
     function findNewest() {
         $.ajax({
-            type: "Get",
+            type: "Post",
+            dataType:"jsonp",
+            jsonpCallback: 'callback',
             url: "/findNewest",
             success: function (msg) {
                $('#newestUl').empty()
@@ -17,6 +19,8 @@
     function findtop() {
         $.ajax({
             type: "Post",
+            dataType:"jsonp",
+            jsonpCallback: 'callback',
             url: "/findNewest2",
             success: function (msg2) {
                 $('#topUl').empty()
@@ -31,6 +35,8 @@
     function findNewest3() {
         $.ajax({
             type: "Post",
+            dataType:"jsonp",
+            jsonpCallback: 'callback',
             url: "/findNewest",
             success: function (msg3) {
                 $('#newestUl3').empty()
@@ -52,8 +58,11 @@
         $.ajax({
             type: "Post",
             url: "/findPost",
+            dataType:"jsonp",
+            jsonpCallback: 'callback',
             data: {postId: postId},
             success: function (msg) {
+                console.log(msg.post)
                 $('#post-selected-title')[0].innerText = msg.post.title
                 $('#post-selected-body')[0].innerHTML = msg.post.body
                 $('#post-selected-time')[0].innerText = msg.post.createdAt.split('.')[0].replace('T', ' ')
@@ -75,6 +84,8 @@
         $.ajax({
             type: "Post",
             url: url,
+            dataType:"jsonp",
+            jsonpCallback: 'callback',
             data: {text: $('#commentText')[0].value},
             success: function (msg) {
                 $('#commentArea').empty()
@@ -184,13 +195,15 @@
         <div class="col-xs-12 " id="post_selected">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h2 id="post-selected-title"></h2>
+
+                    <h2 id="post-selected-title">xxx</h2>
                     <button class="btn" style="float:right"><span class="glyphicon glyphicon-heart-empty"></span>
                     </button>
-                    <span  ><small id="post-selected-time"></small></span><br><br>
-                    <span class="label label-default" id="post-selected-tag" ></span>
+                    <span  ><small id="post-selected-time">xxx</small></span><br><br>
+                    <span class="label label-default" id="post-selected-tag" >xxx</span>
                     <hr>
-                    <p id="post-selected-body"></p>
+                    <p id="post-selected-body">xxx</p>
+
                 </div>
                 <div class="panel-body" id="commentArea">
 
@@ -204,7 +217,6 @@
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

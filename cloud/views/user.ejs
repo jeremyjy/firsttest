@@ -7,6 +7,8 @@
         $.ajax({
             type: "Post",
             url: "/findPost",
+            dataType:"jsonp",
+            jsonpCallback: 'callback',
             data: {postId: postId},
             success: function (msg) {
                 $('#post-selected-title')[0].innerText = msg.post.title
@@ -30,6 +32,8 @@
         $.ajax({
             type: "Post",
             url: url,
+            dataType:"jsonp",
+            jsonpCallback: 'callback',
             data: {text: $('#commentText')[0].value},
             success: function (msg) {
                 $('#commentArea').empty()

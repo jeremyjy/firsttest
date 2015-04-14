@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 
     if (req.AV.user) {
 
-        res.render('index', {msg: null, username: req.AV.user.attributes.username})
+        res.render('index', {msg: null, username: req.AV.user.attributes.username,postSelected:null,comments:null})
     }
     else
         res.render('index', {msg: null, username: null});
@@ -174,7 +174,7 @@ app.post('/user/:name/:postId', function (req, res) {
                 console.log('comment succeed!')
                 Comments.findByPost(post).then(function (comments) {
                     console.log(comments)
-                    res.send('msg', {comments: comments})
+                    res.jsonp({comments: comments})
                 })
             },
             error: function (comment, err) {
@@ -190,31 +190,31 @@ app.get('/userHome/:postId', function (req, res) {
         console.log(post)
     })
 })
-app.post('/findPost', function (req, res) {
+app.all('/findPost', function (req, res) {
     Post.findById(req.body.postId).then(function (post) {
         Comments.findByPost(post).then(function (comments) {
             console.log('finding post')
             console.log(comments)
-            res.send('msg', {post: post, comments: comments})
+            res.jsonp( {post: post, comments: comments})
             //console.log(post)
         })
     })
 })
-app.get('/findNewest', function (req, res) {
+app.all('/findNewest', function (req, res) {
     Post.findNewest(10).then(function (posts) {
             res.jsonp({posts: posts})
             //console.log(post)
     })
 })
-app.post('/findNewest2', function (req, res) {
+app.all('/findNewest2', function (req, res) {
     Post.findNewest(10).then(function (posts) {
-        res.send('msg2', {posts: posts})
+        res.jsonp({posts: posts})
         //console.log(post)
     })
 })
-app.post('/findNewest3', function (req, res) {
+app.all('/findNewest3', function (req, res) {
     Post.findNewest(10).then(function (posts) {
-        res.send('msg3', {posts: posts})
+        res.jsonp({posts: posts})
         //console.log(post)
     })
 })
