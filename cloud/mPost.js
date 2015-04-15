@@ -24,9 +24,9 @@ function findNewest(num){
     })
 }
 function findByUser(user){
-    return findPosts(function (q) {
-        q.equalTo('user',user)
-    })
+        return findPosts(function (q) {
+            q.equalTo('user',user)
+        })
 
 }
 function findById(postId){

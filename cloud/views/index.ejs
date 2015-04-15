@@ -22,7 +22,7 @@
 //                    $('<li><a class=\"text-muted\" href=\"/user/'+post.author+'/'+post.objectId+'\">'+post.title+'</a></li>').appendTo($('#newestUl'))
                 })
                 msg.posts3.forEach(function(post,err){
-                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#newestUl3'))
+                    $('<li><a class=\"text-muted\" href=\"/user/'+post.username+'\">'+post.username+'</a></li>').appendTo($('#newestUl3'))
 //                    $('<li><a class=\"text-muted\" href=\"/user/'+post.author+'/'+post.objectId+'\">'+post.title+'</a></li>').appendTo($('#newestUl'))
                 })
             }
@@ -163,7 +163,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <div><a class="navbar-brand" href="#">Article List</a></div>
+                        <div><a class="navbar-brand" href="#">Recommendation</a></div>
                         <br>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar-ul-2">
@@ -184,7 +184,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <div><a class="navbar-brand" href="#">Article List</a></div>
+                        <div><a class="navbar-brand" href="#">Recommend User</a></div>
                         <br>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar-ul-3">
@@ -216,7 +216,7 @@
                     <form method="POST">
                         <input type="text" class="form-control" name="text" id="commentText">
                         <br>
-                        <button id="commentSub" class="btn btn-primary" type="button">Comment
+                        <button id="commentSub" class="btn btn-primary" type="button" onclick="">Comment
                         </button>
                     </form>
                 </div>

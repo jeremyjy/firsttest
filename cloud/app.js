@@ -4,7 +4,7 @@ var app = express();
 var avosExpressCookieSession = require('avos-express-cookie-session');
 var Post = require('cloud/mPost.js')
 var Comments = require('cloud/mComment.js')
-
+var Users = require('cloud/mUser.js')
 
 // App 全局配置
 app.set('views', 'cloud/views');   // 设置模板目录
@@ -202,8 +202,12 @@ app.all('/findPost', function (req, res) {
 })
 app.all('/findNewest', function (req, res) {
     Post.findNewest(10).then(function (posts) {
-            res.jsonp({posts: posts,posts2:posts,posts3:posts})
-            //console.log(post)
+        Post.findByAuthor('admin').then(function (posts2){
+            Users.findSomeOne(10).then(function(posts3){
+                console.log(posts3)
+                res.jsonp({posts: posts,posts2:posts2,posts3:posts3})
+            })
+        })
     })
 })
 //app.all('/findNewest2', function (req, res) {
