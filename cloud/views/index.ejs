@@ -8,51 +8,59 @@
             url: "/findNewest",
             success: function (msg) {
                $('#newestUl').empty()
+               $('#newestUl2').empty()
+               $('#newestUl3').empty()
                 $('<li><h3>&nbsp;</h3></li>').appendTo($('#newestUl'))
+                $('<li><h3>&nbsp;</h3></li>').appendTo($('#newestUl2'))
+                $('<li><h3>&nbsp;</h3></li>').appendTo($('#newestUl3'))
                 msg.posts.forEach(function(post,err){
                     $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#newestUl'))
+//                    $('<li><a class=\"text-muted\" href=\"/user/'+post.author+'/'+post.objectId+'\">'+post.title+'</a></li>').appendTo($('#newestUl'))
+                })
+                msg.posts2.forEach(function(post,err){
+                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#newestUl2'))
+//                    $('<li><a class=\"text-muted\" href=\"/user/'+post.author+'/'+post.objectId+'\">'+post.title+'</a></li>').appendTo($('#newestUl'))
+                })
+                msg.posts3.forEach(function(post,err){
+                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#newestUl3'))
 //                    $('<li><a class=\"text-muted\" href=\"/user/'+post.author+'/'+post.objectId+'\">'+post.title+'</a></li>').appendTo($('#newestUl'))
                 })
             }
         })
     }
-    function findtop() {
-        $.ajax({
-            type: "Post",
-            dataType:"jsonp",
-            jsonpCallback: 'callback',
-            url: "/findNewest2",
-            success: function (msg2) {
-                $('#topUl').empty()
-                $('<li><h3>&nbsp;</h3></li>').appendTo($('#topUl'))
-                msg2.posts.forEach(function (post, err) {
-                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#topUl'))
-                })
+//    function findtop() {
+//        $.ajax({
+//            type: "Post",
+//            dataType:"jsonp",
+//            jsonpCallback: 'callback',
+//            url: "/findNewest2",
+//            success: function (msg2) {
+//                $('#topUl').empty()
+//                $('<li><h3>&nbsp;</h3></li>').appendTo($('#topUl'))
+//                msg2.posts.forEach(function (post, err) {
+//                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#topUl'))
+//                })
+//
+//            }
+//        })
+//    }
+//    function findNewest3() {
+//        $.ajax({
+//            type: "Post",
+//            dataType:"jsonp",
+//            jsonpCallback: 'callback',
+//            url: "/findNewest3",
+//            success: function (msg3) {
+//                $('#newestUl3').empty()
+//                $('<li><h3>&nbsp;</h3></li>').appendTo($('#newestUl3'))
+//                msg3.posts.forEach(function(post,err){
+//                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#newestUl3'))
+//                })
+//            }
+//        })
+//    }
 
-            }
-        })
-    }
-    function findNewest3() {
-        $.ajax({
-            type: "Post",
-            dataType:"jsonp",
-            jsonpCallback: 'callback',
-            url: "/findNewest3",
-            success: function (msg3) {
-                $('#newestUl3').empty()
-                $('<li><h3>&nbsp;</h3></li>').appendTo($('#newestUl3'))
-                msg3.posts.forEach(function(post,err){
-                    $('<li><a class=\"text-muted\" href=\"#\" onclick=\"findPost(\''+post.objectId+'\')\">'+post.title+'</a></li>').appendTo($('#newestUl3'))
-                })
-            }
-        })
-    }
-
-    $(document).ready(function () {
-        findNewest()
-        findtop()
-        findNewest3()
-    })
+    $(document).ready(findNewest())
     function findPost(postId) {
         //console.log('fin post begin')
         $.ajax({
@@ -138,10 +146,6 @@
                         <ul class="nav  nav-stacked" role="navigation" id="newestUl">
                             <li><h3>&nbsp;</h3></li>
 
-
-                            <li><a href="#"
-                                   class="text-muted">xxx</a></li>
-
                         </ul>
                     </div>
 
@@ -163,7 +167,7 @@
                         <br>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar-ul-2">
-                        <ul class="nav  nav-stacked" role="navigation" id="topUl">
+                        <ul class="nav  nav-stacked" role="navigation" id="newestUl2">
                         </ul>
                     </div>
                 </div>

@@ -202,22 +202,22 @@ app.all('/findPost', function (req, res) {
 })
 app.all('/findNewest', function (req, res) {
     Post.findNewest(10).then(function (posts) {
-            res.jsonp({posts: posts})
+            res.jsonp({posts: posts,posts2:posts,posts3:posts})
             //console.log(post)
     })
 })
-app.all('/findNewest2', function (req, res) {
-    Post.findNewest(10).then(function (posts) {
-        res.jsonp({posts: posts})
-        //console.log(post)
-    })
-})
-app.all('/findNewest3', function (req, res) {
-    Post.findNewest(10).then(function (posts) {
-        res.jsonp({posts: posts})
-        //console.log(post)
-    })
-})
+//app.all('/findNewest2', function (req, res) {
+//    Post.findNewest(10).then(function (posts) {
+//        res.jsonp({posts: posts})
+//        //console.log(post)
+//    })
+//})
+//app.all('/findNewest3', function (req, res) {
+//    Post.findNewest(10).then(function (posts) {
+//        res.jsonp({posts: posts})
+//        //console.log(post)
+//    })
+//})
 app.post('/likes', function (req, res) {
     console.log('like back')
     var user = req.AV.user
