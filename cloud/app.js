@@ -125,10 +125,10 @@ app.post('/writePost', function (req, res) {
     post.save(null, {
         success: function (post) {
             console.log('post success!')
-            res.send('msg', {msgType: 'alert-info', msg: 'post success!'})
+            res.jsonp({msgType: 'alert-info', msg: 'post success!'})
         },
         error: function (post, err) {
-            res.send('msg', {msgType: 'alert-danger', msg: 'post success!'})
+            res.jsonp({msgType: 'alert-danger', msg: 'post success!'})
         }
     })
 
