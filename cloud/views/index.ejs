@@ -1,4 +1,9 @@
 <% include header.ejs %>
+<style>
+    .col-md-4{
+        overflow: hidden;
+    }
+</style>
 <script>
     function findNewest() {
         $.ajax({
@@ -120,15 +125,15 @@
 <% include nav.ejs %>
 <% include login.ejs %>
 <div class="jumbotron" style="margin-top:-20px;">
-    <h1>Hello, world!</h1>
+    <h2>Simple Blog Demo!</h2>
 
-    <p>...</p>
+    <p>这是一个简单的博客程序，使用leancloud BaaS作为服务端和数据，后台云代码基于exoress(JS),代码托管在github，有时间会继续完善功能</p>
 
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+    <p><a class="btn btn-primary btn-lg" href="https://github.com/jeremyjy/firsttest" role="button">github</a></p>
 </div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-sm-12 col-md-4">
             <nav class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
@@ -152,7 +157,7 @@
                 </div>
             </nav>
         </div>
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-sm-12 col-md-4">
             <nav class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
@@ -173,7 +178,7 @@
                 </div>
             </nav>
         </div>
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-sm-12 col-md-4">
             <nav class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
@@ -196,7 +201,7 @@
                 </div>
             </nav>
         </div>
-        <div class="col-xs-12 " id="post_selected">
+        <div class="col-sm-12 " id="post_selected">
             <div class="panel panel-default">
                 <div class="panel-body">
 

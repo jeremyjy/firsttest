@@ -56,6 +56,9 @@
     .commentsTime {
         float: right;
     }
+    .col-sm-4{
+        overflow: hidden;
+    }
 </style>
 </head>
 <body>
@@ -96,7 +99,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-12 col-sm-3">
+        <div class="col-xs-12 col-sm-4">
             <nav class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
@@ -124,7 +127,7 @@
                 </div>
             </nav>
         </div>
-        <div class="col-xs-12 col-sm-9" id="post_selected">
+        <div class="col-xs-12 col-sm-8" id="post_selected">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <% if (postSelected){ %>
@@ -145,7 +148,7 @@
                     </p>
                     <p><%= comment.attributes.author %> Said:</p>
 
-                    <p><%= comment.attributes.text %></p>
+                    <p><%=(comment.attributes.text)%></p>
                     <% })} %>
                 </div>
                 <div class="panel-footer">
